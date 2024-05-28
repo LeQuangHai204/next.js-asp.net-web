@@ -1,15 +1,15 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
-using Mysqlx;
-using ZstdSharp.Unsafe;
+
+using Api.Models;
 
 namespace Api
 {
-    internal class Program
+    public class Program
     {
         private static void Main(string[] args)
         {
+
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             ConfigurationManager configuration = builder.Configuration;
             IServiceCollection services = builder.Services;
@@ -17,9 +17,6 @@ namespace Api
             // Add services (default by asp)
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-
-            // Add controller service
-            services.AddControllers();
 
             // Add database context service
             IConfigurationSection? connectionInfo = configuration
@@ -42,8 +39,26 @@ namespace Api
                 Password = connectionInfo["Pwd"],
             };
 
-            services.AddDbContext<AppDbContext>(dbContextOptionsBuilder =>
-                dbContextOptionsBuilder.UseMySQL(connectionStringBuilder.ConnectionString));
+            try // Register custom services
+            {
+                // Add database context service
+                services.AddDbContext<AppDbContext>(dbContextOptionsBuilder =>
+                    dbContextOptionsBuilder.UseMySQL(connectionStringBuilder.ConnectionString));
+
+                // Add controller service
+                services.AddControllers();
+
+                // Register data access objects components
+                services.AddScoped<IDbEntityDao<Customer>, CustomerDao>();
+
+                // Register entity mapper components
+                services.AddScoped<CustomerDtoMapper>();
+            }
+            catch (Exception ex)
+            {
+                HandleError("Service registration failed: " + ex.Message);
+                return;
+            }
 
             // Create app from builder
             WebApplication app;
@@ -53,8 +68,7 @@ namespace Api
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                HandleError("Application initialzation failed");
+                HandleError("Application initialzation failed: " + ex.Message);
                 return;
             }
 
