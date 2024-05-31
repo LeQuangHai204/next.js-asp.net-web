@@ -20,17 +20,18 @@ namespace Api.Controllers
         public IActionResult GetAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            IEnumerable<IEntityDto<Customer>> customers;
 
             try
             {
-
-                IEnumerable<IEntityDto<Customer>> customers = _customerDao.GetAllAsync();
-                return Ok(customers);
+                customers = _customerDao.GetAllAsync();
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Get all customers failed: " + ex.Message);
             }
+
+            return Ok(customers);
         }
 
         [HttpGet("{id:int}")]

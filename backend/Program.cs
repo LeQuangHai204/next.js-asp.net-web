@@ -54,7 +54,7 @@ namespace Api
                 services.AddScoped<IEntityDao<Customer>, CustomerDao>();
 
                 // Register entity mapper components
-                services.AddScoped<CustomerDtoMapper>();
+                services.AddScoped<CustomerMapper>();
             }
             catch (Exception ex)
             {

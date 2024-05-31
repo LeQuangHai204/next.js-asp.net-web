@@ -3,9 +3,9 @@ namespace Api.Models
     public class CustomerDao : IEntityDao<Customer>
     {
         private readonly AppDbContext _dbContext;
-        private readonly CustomerDtoMapper _dataMapper;
+        private readonly CustomerMapper _dataMapper;
 
-        public CustomerDao(AppDbContext dbContext, CustomerDtoMapper dataMapper)
+        public CustomerDao(AppDbContext dbContext, CustomerMapper dataMapper)
         {
             _dbContext = dbContext;
             _dataMapper = dataMapper;
@@ -14,7 +14,7 @@ namespace Api.Models
         public IEnumerable<IEntityDto<Customer>> GetAllAsync()
         {
             return _dbContext.Customers
-                .Select(customer => _dataMapper.ToDto<CustomerBasicInfoDto>(customer))
+                .Select(customer => (CustomerBasicInfoDto)_dataMapper.ToDto<CustomerBasicInfoDto>(customer))
                 .ToList();
         }
 
@@ -22,7 +22,7 @@ namespace Api.Models
         {
             Customer? customer = await _dbContext.Customers.FindAsync(id);
             if (customer == null) return null;
-            return _dataMapper.ToDto<CustomerBasicInfoDto>(customer);
+            return (CustomerBasicInfoDto)_dataMapper.ToDto<CustomerBasicInfoDto>(customer);
         }
 
         public async Task<Customer> AddAsync(IEntityDto<Customer> entity)
