@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
 using Api.Models;
-using MySql.Data.MySqlClient;
 
 namespace Api
 {

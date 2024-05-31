@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Api.Models
 {
-    public class CustomerDao : IDbEntityDao<Customer>
+    public class CustomerDao : IEntityDao<Customer>
     {
         private readonly AppDbContext _dbContext;
         private readonly CustomerDtoMapper _dataMapper;
@@ -13,33 +11,34 @@ namespace Api.Models
             _dataMapper = dataMapper;
         }
 
-        public IAsyncEnumerable<IDbEntityDto<Customer>> GetAllAsync()
+        public IEnumerable<IEntityDto<Customer>> GetAllAsync()
         {
             return _dbContext.Customers
-                .AsAsyncEnumerable()
-                .Select(customer => _dataMapper.ConvertEntityToBasicInfoDto(customer));
+                .Select(customer => _dataMapper.ToDto<CustomerBasicInfoDto>(customer))
+                .ToList();
         }
 
-        public async Task<IDbEntityDto<Customer>?> GetByIdAsync(int id)
+        public async Task<IEntityDto<Customer>?> GetByIdAsync(int id)
         {
             Customer? customer = await _dbContext.Customers.FindAsync(id);
             if (customer == null) return null;
-            return _dataMapper.ConvertEntityToBasicInfoDto(customer);
+            return _dataMapper.ToDto<CustomerBasicInfoDto>(customer);
         }
 
-        public async Task<Customer> AddAsync(IDbEntityDto<Customer> entity)
+        public async Task<Customer> AddAsync(IEntityDto<Customer> entity)
         {
             if (entity is not CustomerCreateDto dto)
             {
                 throw new ArgumentException("Invalid type");
             }
 
-            Customer customer = _dataMapper.ConvertCreateRequestDtoToEntity(dto);
+            Customer customer = _dataMapper.ToEntity(dto);
             await _dbContext.Customers.AddAsync(customer);
             await _dbContext.SaveChangesAsync();
             return customer;
         }
-        public async Task UpdateAsync(IDbEntityDto<Customer> entity, object id)
+
+        public async Task UpdateAsync(IEntityDto<Customer> entity, object id)
         {
             if (entity is not CustomerUpdateDto newInfo)
             {

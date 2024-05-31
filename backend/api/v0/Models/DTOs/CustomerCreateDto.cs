@@ -2,11 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models
 {
-    public class CustomerCreateDto : IDbEntityDto<Customer>
+    public class CustomerCreateDto : IEntityDto<Customer>
     {
-        public CustomerCreateDto()
-        { }
-
         [Required]
         [StringLength(255)]
         public required string FullName { get; set; }

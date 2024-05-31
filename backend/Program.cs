@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
+using System.Reflection;
 
 using Api.Models;
 
@@ -9,7 +10,6 @@ namespace Api
     {
         private static void Main(string[] args)
         {
-
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             ConfigurationManager configuration = builder.Configuration;
             IServiceCollection services = builder.Services;
@@ -43,13 +43,15 @@ namespace Api
             {
                 // Add database context service
                 services.AddDbContext<AppDbContext>(dbContextOptionsBuilder =>
-                    dbContextOptionsBuilder.UseMySQL(connectionStringBuilder.ConnectionString));
+                {
+                    dbContextOptionsBuilder.UseMySQL(connectionStringBuilder.ConnectionString);
+                });
 
                 // Add controller service
                 services.AddControllers();
 
                 // Register data access objects components
-                services.AddScoped<IDbEntityDao<Customer>, CustomerDao>();
+                services.AddScoped<IEntityDao<Customer>, CustomerDao>();
 
                 // Register entity mapper components
                 services.AddScoped<CustomerDtoMapper>();

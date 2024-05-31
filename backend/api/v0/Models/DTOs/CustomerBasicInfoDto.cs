@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models
 {
-    public class CustomerBasicInfoDto : IDbEntityDto<Customer>
+    public class CustomerBasicInfoDto : IEntityDto<Customer>
     {
         public int Id { get; set; }
 

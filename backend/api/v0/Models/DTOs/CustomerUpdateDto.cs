@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models
 {
-    public class CustomerUpdateDto : IDbEntityDto<Customer>
+    public class CustomerUpdateDto : IEntityDto<Customer>
     {
         [StringLength(255)]
         public string? FullName { get; set; }

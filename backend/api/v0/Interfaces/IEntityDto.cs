@@ -1,6 +1,6 @@
 namespace Api
 {
-    public interface IDbEntityDto<T> : IEntity
+    public interface IEntityDto<T> : IEntity
         where T : IDbEntity
     {
 

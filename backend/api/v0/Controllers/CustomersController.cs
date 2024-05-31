@@ -9,9 +9,9 @@ namespace Api.Controllers
     [ApiController]
     public class customersController : ControllerBase
     {
-        private readonly IDbEntityDao<Customer> _customerDao;
+        private readonly IEntityDao<Customer> _customerDao;
 
-        public customersController(IDbEntityDao<Customer> customerDao)
+        public customersController(IEntityDao<Customer> customerDao)
         {
             _customerDao = customerDao;
         }
@@ -23,7 +23,9 @@ namespace Api.Controllers
 
             try
             {
-                return Ok(_customerDao.GetAllAsync());
+
+                IEnumerable<IEntityDto<Customer>> customers = _customerDao.GetAllAsync();
+                return Ok(customers);
             }
             catch (Exception ex)
             {
@@ -35,7 +37,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            IDbEntityDto<Customer>? customer;
+            IEntityDto<Customer>? customer;
 
             try
             {
@@ -68,7 +70,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CustomerCreateDto customer)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CustomerUpdateDto customer)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -81,7 +83,7 @@ namespace Api.Controllers
                 return StatusCode(500, "Update customer failed: " + ex.Message);
             }
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -98,7 +100,7 @@ namespace Api.Controllers
                 return StatusCode(500, "Delete customer failed: " + ex.Message);
             }
 
-            return Ok();
+            return NoContent();
         }
     }
 }
