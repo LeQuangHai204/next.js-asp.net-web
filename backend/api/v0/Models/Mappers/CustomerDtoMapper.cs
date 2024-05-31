@@ -19,26 +19,22 @@ namespace Api.Models
                     .GetValue(customerDto);
             }
 
+            Func<PropertyInfo?, object?> getPropertyValue = (prop) =>
+            {
+                if (prop == null) throw new ArgumentNullException("Property not found");
+                return properties.TryGetValue(prop, out object? value) ? value : null;
+            };
+
             return new Customer()
             {
-                FullName = GetPropertyValue<string>(properties, type.GetProperty("FullName"))
+                FullName = getPropertyValue(type.GetProperty("FullName")) as string
                     ?? throw new ArgumentNullException("Convert failed: customer's full name is required"),
-                NickName = GetPropertyValue<string>(properties, type.GetProperty("NickName")),
-                Address = GetPropertyValue<string>(properties, type.GetProperty("Address")),
-                City = GetPropertyValue<string>(properties, type.GetProperty("City")),
-                PostalCode = GetPropertyValue<string>(properties, type.GetProperty("PostalCode")),
-                Country = GetPropertyValue<string>(properties, type.GetProperty("Country"))
+                NickName = getPropertyValue(type.GetProperty("NickName")) as string,
+                Address = getPropertyValue(type.GetProperty("Address")) as string,
+                City = getPropertyValue(type.GetProperty("City")) as string,
+                PostalCode = getPropertyValue(type.GetProperty("PostalCode")) as string,
+                Country = getPropertyValue(type.GetProperty("Country")) as string
             };
-        }
-
-        private T? GetPropertyValue<T>(
-            Dictionary<PropertyInfo, object?> properties,
-            PropertyInfo? property)
-            where T : class
-        {
-            if (property == null) throw new ArgumentNullException("Property not found");
-            if (properties.TryGetValue(property, out object? value)) return (T?)value;
-            return null;
         }
 
         public T ToDto<T>(Customer customer) where T : IEntityDto<Customer>
@@ -50,12 +46,12 @@ namespace Api.Models
             T dto = compiledExpression();
 
             // Set properties using reflection
-            foreach (PropertyInfo customerProperty in typeof(Customer).GetProperties())
+            foreach (PropertyInfo property in typeof(Customer).GetProperties())
             {
-                PropertyInfo? dtoProperty = typeof(T).GetProperty(customerProperty.Name);
+                PropertyInfo? dtoProperty = typeof(T).GetProperty(property.Name);
                 if (dtoProperty != null && dtoProperty.CanWrite)
                 {
-                    object? value = customerProperty.GetValue(customer);
+                    object? value = property.GetValue(customer);
                     dtoProperty.SetValue(dto, value);
                 }
             }
