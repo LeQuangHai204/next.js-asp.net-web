@@ -1,7 +1,7 @@
 namespace Api
 {
     public interface IEntityDto<T> : IEntity
-        where T : IDbEntity
+        where T : IEntity
     {
 
     }

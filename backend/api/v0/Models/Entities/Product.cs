@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Models
 {
@@ -8,31 +9,34 @@ namespace Api.Models
     {
         [Key]
         [Required]
-        [Column("SanphamID", TypeName = "int")]
+        [Range(0, int.MaxValue)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Column("SanphamID", TypeName = "int")]
+        public int? Id { get; set; }
 
-        [StringLength(255)]
+        [ForeignKey(nameof(Provider))]
+        [Required]
+        [Range(0, int.MaxValue)]
+        [Column("CungcapID", TypeName = "int")]
+        public int? ProviderId { get; set; }
+        public Provider? Provider { get; set; }
+
+        [ForeignKey(nameof(ProductType))]
+        [Range(0, int.MaxValue)]
+        [Column("DanhmucID", TypeName = "int")]
+        public int? ProductTypeId { get; set; }
+        public ProductType? ProductType { get; set; }
+
+        [MaxLength(255)]
         [Column("TenSanpham", TypeName = "varchar(255)")]
         public string? Name { get; set; }
 
-        [Column("CungcapID", TypeName = "int")]
-        public int? ProviderId { get; set; }
-
-        [Column("DanhmucID", TypeName = "int")]
-        public int? ProductTypeId { get; set; }
-
-        [StringLength(255)]
+        [MaxLength(255)]
         [Column("Donvi", TypeName = "varchar(255)")]
         public string? Unit { get; set; }
 
+        [Precision(13, 2)]
         [Column("Gia", TypeName = "decimal(13,2)")]
         public decimal? Price { get; set; }
-
-        [ForeignKey("CungcapID")]
-        public Provider? Provider { get; set; }
-
-        [ForeignKey("DanhmucID")]
-        public ProductType? ProductType { get; set; }
     }
 }

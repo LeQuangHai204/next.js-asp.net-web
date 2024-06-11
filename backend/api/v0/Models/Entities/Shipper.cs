@@ -8,15 +8,17 @@ namespace Api.Models
     {
         [Key]
         [Required]
-        [Column("ShipperID")]
+        [Range(0, int.MaxValue)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Column("ShipperID", TypeName = "int")]
+        public int? Id { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Column("Hoten", TypeName = "varchar(255)")]
         public string? Name { get; set; }
 
-        [StringLength(255)]
+        [Phone]
+        [MaxLength(255)]
         [Column("Sodienthoai", TypeName = "varchar(255)")]
         public string? PhoneNo { get; set; }
     }

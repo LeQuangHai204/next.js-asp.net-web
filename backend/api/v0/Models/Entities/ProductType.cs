@@ -8,15 +8,16 @@ namespace Api.Models
     {
         [Key]
         [Required]
-        [Column("DanhmucID", TypeName = "int")]
+        [Range(0, int.MaxValue)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Column("DanhmucID", TypeName = "int")]
+        public int? Id { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Column("TenDanhMuc", TypeName = "varchar(255)")]
         public string? Name { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Column("MoTa", TypeName = "varchar(255)")]
         public string? Description { get; set; }
     }

@@ -9,22 +9,26 @@ namespace Api.Models
         [Key]
         [Required]
         [Column("DonhangChitietID", TypeName = "int")]
+        [Range(0, int.MaxValue)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
+        [ForeignKey(nameof(OrderId))]
+        [Required]
         [Column("DonhangID", TypeName = "int")]
+        [Range(0, int.MaxValue)]
         public int? OrderId { get; set; }
-
-        [Column("SanphamID", TypeName = "int")]
-        public int? ProductId { get; set; }
-
-        [Column("Soluong", TypeName = "int")]
-        public int? Count { get; set; }
-
-        [ForeignKey("DonhangID")]
         public Order? Order { get; set; }
 
-        [ForeignKey("SanphamID")]
+        [ForeignKey(nameof(ProductId))]
+        [Required]
+        [Column("SanphamID", TypeName = "int")]
+        [Range(0, int.MaxValue)]
+        public int? ProductId { get; set; }
         public Product? Product { get; set; }
+
+        [Column("Soluong", TypeName = "int")]
+        [Range(0, int.MaxValue)]
+        public int? Count { get; set; }
     }
 }

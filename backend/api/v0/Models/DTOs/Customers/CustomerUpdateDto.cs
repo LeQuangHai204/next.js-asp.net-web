@@ -1,26 +1,26 @@
 using System.ComponentModel.DataAnnotations;
+using Mysqlx.Crud;
 
 namespace Api.Models
 {
-    public class CustomerCreateDto : IEntityDto<Customer>
+    public sealed class CustomerUpdateDto : UpdateDto<Customer>
     {
-        [Required]
-        [StringLength(255)]
-        public required string FullName { get; set; }
+        [MaxLength(255)]
+        public string? FullName { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string? NickName { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string? Address { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string? City { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string? PostalCode { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string? Country { get; set; }
     }
 }

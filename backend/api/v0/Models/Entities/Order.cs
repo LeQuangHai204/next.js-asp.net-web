@@ -8,21 +8,30 @@ namespace Api.Models
     {
         [Key]
         [Required]
-        [Column("DonhangID", TypeName = "int")]
+        [Range(0, int.MaxValue)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Column("DonhangID", TypeName = "int")]
+        public int? Id { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(Customer))]
+        [Range(0, int.MaxValue)]
         [Column("KhachhangID", TypeName = "int")]
-        public required int customerId { get; set; }
+        public int? customerId { get; set; }
+        public Customer? Customer { get; set; }
 
+        [ForeignKey(nameof(Staff))]
+        [Range(0, int.MaxValue)]
         [Column("NhanvienID", TypeName = "int")]
         public int? staffId { get; set; }
-
-        [Column("ShipperID", TypeName = "int")]
-        public int? shipperId { get; set; }
+        public Staff? Staff { get; set; }
 
         [Column("Ngaydathang", TypeName = "date")]
         public DateTime date { get; set; }
+
+        [ForeignKey(nameof(Shipper))]
+        [Range(0, int.MaxValue)]
+        [Column("ShipperID", TypeName = "int")]
+        public int? shipperId { get; set; }
+        public Shipper? Shipper { get; set; }
     }
 }

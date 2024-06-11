@@ -28,7 +28,7 @@ namespace Api.Models
             return new Customer()
             {
                 FullName = getPropertyValue(type.GetProperty("FullName")) as string
-                    ?? throw new ArgumentNullException("Convert failed: customer's full name is required"),
+                    ?? throw new ArgumentNullException("Convert failed: customer's full name required"),
                 NickName = getPropertyValue(type.GetProperty("NickName")) as string,
                 Address = getPropertyValue(type.GetProperty("Address")) as string,
                 City = getPropertyValue(type.GetProperty("City")) as string,
@@ -58,6 +58,16 @@ namespace Api.Models
             }
 
             return dto;
+        }
+
+        public void Merge(Customer entity, IEntityDto<Customer> dto)
+        {
+            foreach (PropertyInfo dtoProperty in dto.GetType().GetProperties())
+            {
+                object? newValue = dtoProperty.GetValue(dto);
+                PropertyInfo? property = entity.GetType().GetProperty(dtoProperty.Name);
+                if (newValue != null && property != null && property.CanWrite) property.SetValue(entity, newValue);
+            }
         }
     }
 }
