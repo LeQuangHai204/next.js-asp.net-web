@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using Api.Models;
+using Api.Model;
+using Api.Model.Dtos.Auth;
+using Api.Services;
 
 namespace Api.Controllers
 {

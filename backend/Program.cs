@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-using Api.Models;
 using Api.Services;
+using Api.Model;
+using Api.Model.Daos;
+using Api.Model.Repositories;
+using Api.Model.Dtos;
 
 namespace Api
 {
@@ -137,11 +140,12 @@ namespace Api
                 // Register data access objects components
                 services.AddScoped<IEntityDao<Customer>, CustomerDao>();
 
-                // Register entity mapper components
-                services.AddScoped<IEntityMapper<Customer>, CustomerMapper>();
+                // Register entity repository components
+                services.AddScoped<IEntityRepository<Customer>, CustomerRepository>();
 
                 // Register services components
                 services.AddScoped<IJwtService, JwtService>();
+                services.AddScoped<CustomerService>();
 
                 // Register middleware components
                 services.AddScoped<JwtCookieMiddleware>();

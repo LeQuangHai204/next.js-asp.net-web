@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-using Api.Models;
-using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Authorization;
+
+using Api.Model;
+using Api.Model.Dtos;
+using Api.Services;
 
 namespace Api.Controllers
 {
@@ -11,15 +11,15 @@ namespace Api.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly IEntityDao<Customer> _customerDao;
+        private readonly CustomerService _customerService;
 
-        public CustomerController(IEntityDao<Customer> customerDao)
+        public CustomerController(CustomerService customerService)
         {
-            _customerDao = customerDao;
+            _customerService = customerService;
         }
 
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         public IActionResult GetAll([FromQuery] CustomerQueryDto query)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -28,11 +28,7 @@ namespace Api.Controllers
 
             try
             {
-                customers = _customerDao.GetAllAsync(query);
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, "SQL SELECT command execution failed: " + ex.Message);
+                customers = _customerService.GetCustomersAsync(query);
             }
             catch (Exception ex)
             {
@@ -51,11 +47,7 @@ namespace Api.Controllers
 
             try
             {
-                customer = await _customerDao.GetByIdAsync(id);
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, "SQL SELECT command execution failed: " + ex.Message);
+                customer = await _customerService.GetCustomerByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -70,22 +62,18 @@ namespace Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            Customer newCustomer;
+            IEntityDto<Customer> newCustomer;
 
             try
             {
-                newCustomer = await _customerDao.AddAsync(customer);
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, "SQL CREATE command execution failed: " + ex.Message);
+                newCustomer = await _customerService.CreateCustomerAsync(customer);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Create customer failed: " + ex.Message);
             }
 
-            return CreatedAtAction(nameof(GetById), new { id = newCustomer.Id }, newCustomer);
+            return Created(null as Uri, newCustomer);
         }
 
         [HttpPut("{id:int}")]
@@ -97,15 +85,11 @@ namespace Api.Controllers
 
             try
             {
-                updatedCustomer = await _customerDao.UpdateAsync(customer, id);
+                updatedCustomer = await _customerService.UpdateCustomerAsync(customer, id);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound("Update customer failed: " + ex.Message);
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, "SQL UPDATE command execution failed: " + ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -122,20 +106,11 @@ namespace Api.Controllers
 
             try
             {
-                await _customerDao.DeleteAsync(id);
+                await _customerService.DeleteCustomerAsync(id);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound("Delete customer failed: " + ex.Message);
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500,
-                    // Check error code for foreign key constraint violation (1451)
-                    (ex.InnerException is MySqlException sqlEx && sqlEx.Number == 1451
-                    ? "Deleting record with existing related records: "
-                    : "SQL DELETE command execution failed: "
-                    ) + ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

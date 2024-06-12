@@ -19,7 +19,7 @@ namespace backend.Migrations
                 .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Api.Models.AppUser", b =>
+            modelBuilder.Entity("Api.Model.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -83,7 +83,7 @@ namespace backend.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Api.Models.Customer", b =>
+            modelBuilder.Entity("Api.Model.Customer", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +126,7 @@ namespace backend.Migrations
                     b.ToTable("khachhang");
                 });
 
-            modelBuilder.Entity("Api.Models.Order", b =>
+            modelBuilder.Entity("Api.Model.Order", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +160,7 @@ namespace backend.Migrations
                     b.ToTable("donhang");
                 });
 
-            modelBuilder.Entity("Api.Models.OrderProduct", b =>
+            modelBuilder.Entity("Api.Model.OrderProduct", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -188,7 +188,7 @@ namespace backend.Migrations
                     b.ToTable("donhangchitiet");
                 });
 
-            modelBuilder.Entity("Api.Models.Product", b =>
+            modelBuilder.Entity("Api.Model.Product", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,7 +228,7 @@ namespace backend.Migrations
                     b.ToTable("sanpham");
                 });
 
-            modelBuilder.Entity("Api.Models.ProductType", b =>
+            modelBuilder.Entity("Api.Model.ProductType", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,7 +250,7 @@ namespace backend.Migrations
                     b.ToTable("danhmuc");
                 });
 
-            modelBuilder.Entity("Api.Models.Provider", b =>
+            modelBuilder.Entity("Api.Model.Provider", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,7 +297,7 @@ namespace backend.Migrations
                     b.ToTable("cungcap");
                 });
 
-            modelBuilder.Entity("Api.Models.Shipper", b =>
+            modelBuilder.Entity("Api.Model.Shipper", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -319,7 +319,7 @@ namespace backend.Migrations
                     b.ToTable("giaohang");
                 });
 
-            modelBuilder.Entity("Api.Models.Staff", b =>
+            modelBuilder.Entity("Api.Model.Staff", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -502,17 +502,17 @@ namespace backend.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Api.Models.Order", b =>
+            modelBuilder.Entity("Api.Model.Order", b =>
                 {
-                    b.HasOne("Api.Models.Customer", "Customer")
+                    b.HasOne("Api.Model.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("customerId");
 
-                    b.HasOne("Api.Models.Shipper", "Shipper")
+                    b.HasOne("Api.Model.Shipper", "Shipper")
                         .WithMany()
                         .HasForeignKey("shipperId");
 
-                    b.HasOne("Api.Models.Staff", "Staff")
+                    b.HasOne("Api.Model.Staff", "Staff")
                         .WithMany()
                         .HasForeignKey("staffId");
 
@@ -523,15 +523,15 @@ namespace backend.Migrations
                     b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("Api.Models.OrderProduct", b =>
+            modelBuilder.Entity("Api.Model.OrderProduct", b =>
                 {
-                    b.HasOne("Api.Models.Order", "Order")
+                    b.HasOne("Api.Model.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api.Models.Product", "Product")
+                    b.HasOne("Api.Model.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -542,13 +542,13 @@ namespace backend.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Api.Models.Product", b =>
+            modelBuilder.Entity("Api.Model.Product", b =>
                 {
-                    b.HasOne("Api.Models.ProductType", "ProductType")
+                    b.HasOne("Api.Model.ProductType", "ProductType")
                         .WithMany()
                         .HasForeignKey("ProductTypeId");
 
-                    b.HasOne("Api.Models.Provider", "Provider")
+                    b.HasOne("Api.Model.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -570,7 +570,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Api.Models.AppUser", null)
+                    b.HasOne("Api.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -579,7 +579,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Api.Models.AppUser", null)
+                    b.HasOne("Api.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -594,7 +594,7 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api.Models.AppUser", null)
+                    b.HasOne("Api.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -603,7 +603,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Api.Models.AppUser", null)
+                    b.HasOne("Api.Model.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
