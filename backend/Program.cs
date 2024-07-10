@@ -63,7 +63,7 @@ namespace Api
                 services.AddEndpointsApiExplorer();
                 services.AddSwaggerGen(swaggerGenOptions =>
                 {
-                    swaggerGenOptions.SwaggerDoc("v1", new() { Title = "API", Version = "v1" });
+                    swaggerGenOptions.SwaggerDoc("v0", new() { Title = "API", Version = "v0" });
                     swaggerGenOptions.AddSecurityDefinition("Bearer", new()
                     {
                         Type = SecuritySchemeType.Http,
