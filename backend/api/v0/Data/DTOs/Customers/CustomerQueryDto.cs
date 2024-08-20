@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Model.Dtos
+namespace Api.Model.Dto
 {
     public sealed class CustomerQueryDto : EntityQueryDto<Customer>
     {

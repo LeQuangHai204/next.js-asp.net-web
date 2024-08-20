@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Model.Dtos.Auth
+namespace Api.Model.Dto.Auth
 {
     public class LoginDto : IEntityDto<AppUser>
     {

@@ -9,7 +9,7 @@ using Api.Services;
 using Api.Model;
 using Api.Model.Daos;
 using Api.Model.Repositories;
-using Api.Model.Dtos;
+using Api.Model.Dto;
 
 namespace Api
 {

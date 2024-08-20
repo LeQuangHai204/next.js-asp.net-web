@@ -1,4 +1,4 @@
-namespace Api.Model.Dtos.Auth
+namespace Api.Model.Dto.Auth
 {
     public class JwtTokenDto : IEntityDto<AppUser>
     {

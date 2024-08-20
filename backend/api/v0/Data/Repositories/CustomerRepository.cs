@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-using Api.Model.Dtos;
+using Api.Model.Dto;
 
 namespace Api.Model.Repositories
 {
@@ -98,9 +98,3 @@ namespace Api.Model.Repositories
         // }
     }
 }
-
-/*  fail: Microsoft.EntityFrameworkCore.Update[10000]
-        An exception occurred in the database while saving changes for context type 'Api.AppDbContext'.
-        Microsoft.EntityFrameworkCore.DbUpdateException: Could not save changes. Please configure your entity type accordingly.
-        ---> MySql.Data.MySqlClient.MySqlException (0x80004005): Cannot delete or update a parent row: a foreign key constraint fails (`test_schema`.`donhang`, CONSTRAINT `fk_khachhang` FOREIGN KEY (`KhachhangID`) REFERENCES `khachhang` (`KhachhangID`))
-*/

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using Api.Model;
-using Api.Model.Dtos;
+using Api.Model.Dto;
 using Api.Services;
 
 namespace Api.Controllers
