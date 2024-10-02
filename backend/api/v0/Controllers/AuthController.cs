@@ -16,7 +16,9 @@ namespace Api.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IJwtService _jwtService;
 
-        public AuthController(UserManager<AppUser> userManager,
+
+        public AuthController(
+            UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IJwtService jwtTokenService)

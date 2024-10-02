@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace Api.Model
 {
     [Table("donhangchitiet")]
@@ -32,3 +33,4 @@ namespace Api.Model
         public int? Count { get; set; }
     }
 }
+

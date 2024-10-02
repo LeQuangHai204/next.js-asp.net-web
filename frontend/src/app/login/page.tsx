@@ -5,8 +5,12 @@ import { ChromeIcon } from '@/components/icons/chrome';
 import { QrCodeIcon } from '@/components/icons/qrcode';
 import { UserIcon } from '@/components/icons/user';
 
-export default function Login() {
-    const buttons = [
+export default function Login(): JSX.Element {
+    const buttons: {
+        icon: React.ElementType;
+        label: string;
+        style: string;
+    }[] = [
         {
             icon: QrCodeIcon,
             label: 'Use QR code',
@@ -24,7 +28,7 @@ export default function Login() {
         },
         {
             icon: ChromeIcon,
-            label: 'Continue with Google',
+            label: 'Continue with Go ogle',
             style: 'border border-gray-300 text-black',
         },
     ];
